@@ -1,173 +1,279 @@
-#!/usr/bin/python
-#-*- coding: utf-8 -*-
-import os
-import time
-import datetime
-import speech_recognition as sr
-from fuzzywuzzy import fuzz
 import pyttsx3
-import datetime
+import os
+import random
 import webbrowser
-import pyowm
-from PySide2 import QtCore, QtGui, QtWidgets
+import time
+import speech_recognition as sr
+import pandas as pd
+from tkinter import *
+from fuzzywuzzy import fuzz
+from colorama import *
 import sys
-import wolframalpha
-import wikipedia
-import pyautogui
-from time import sleep
 
 
 
-opts = {
-    'alias':('tom','thomas'),
-    'tbr':('start'),
-    'cmds':{
-    "ctimes": ('what time','now is the time','hour','show time','time','what time'),
-    'stupid': ('tell a joke', 'make me laugh'),
-    'pogoda':('weather', 'show the weather', 'weather','what is the weather now', 'pagoda'),
-    'search':('search','Google search','Google' 'look for','google','find'),
-    'yt':('youtube'),
-    'ali':('ali','aliexpress'),
-    'ctd':('exit')
-    }
+# раздел глобальных переменных
+
+text = ''
+r = sr.Recognizer()
+engine = pyttsx3.init()
+adress = ''
+j = 0
+task_number = 0
+
+ndel = ['sara', 'zara', 'ok']
+
+commands = ['hello', 'открой файл', 'down comp', 'выруби компьютер', 'пока', 'покажи файл','покажи список команд',
+'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
+'открой стату', 'покажи cтатистику', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется']
+
+# раздел описания функций комманд
+
+def pri_com(): # выводит на экран историю запросов
+    z = {}
+    mas = []
+    mas2 = []
+    mas3 = []
+    mas4 = []
+    file = open('commands.txt', 'r', encoding = 'UTF-8')
+    k = file.readlines()
+    for i in range(len(k)):
+        line = str(k[i].replace('\n','').strip())
+        mas.append(line)
+    file.close()
+    for i in range(len(mas)):
+        x = mas[i]
+        if x in z:
+            z[x] += 1
+        if not(x in z):
+            b = {x : 1}
+            z.update(b)
+        if not(x in mas2):
+            mas2.append(x)
+    for i in mas2:
+        mas3.append(z[i])
+    for i in range(1, len(mas3)+1):
+        mas4.append(str(i)+') ')
+    list = pd.DataFrame({
+        'command' : mas2,
+        'count' : mas3
+    }, index = mas4)
+    list.index.name = '№'
+    print(list)
+
+def plans():
+    global engine
+    plans = '''
+    My task will be to help manage the smart home system.
+Currently, we are working on the virtual part of the software.
+We are also working on optimizing all existing functions in the code.
+In the future, we plan to work on the technical part of the project.
+It will consist of creating smart home elements using Arduino microcontrollers.
+Eventually, the virtual and technical parts of the project will be combined.
+My final goal will be achieved.
+     '''
+    engine.say(plans)
+
+def clear_analis(): # очистка файла с историей запросов
+    global engine
+    file = open('commands.txt', 'w', encoding = 'UTF-8')
+    file.close()
+    engine.say('The Analytics file has been cleared!')
+
+def add_file(x):
+    file = open('commands.txt', 'a',encoding = 'UTF-8')
+    if x != '':
+        file.write(x+'\n')
+    file.close()
+
+def comparison(x): # осуществляет поиск самой подходящей под запрос функции
+    global commands,j,add_file
+    ans = ''
+    for i in range(len(commands)):
+        k = fuzz.ratio(x,commands[i])
+        if (k > 50)&(k > j):
+            ans = commands[i]
+            j = k
+    if (ans != 'goodbay!')& (ans != 'hello'):
+        add_file(ans)
+    return(str(ans))
+
+def web_search(): # осуществляет поиск в интернете по запросу (adress)
+    global adress
+    webbrowser.open('https://yandex.ru/yandsearch?clid=2028026&text={}&lr=11373'.format(adress))
+
+def check_searching(): # проверяет нужно-ли искать в интернете
+    global text,wifi_name,add_file
+    global adress
+    global web_search
+    if 'search' in text:
+        add_file('search')
+        adress = text.replace('search','').strip()
+        text = text.replace(adress,'').strip()
+        web_search()
+        text = ''
+    elif 'find' in text:
+        add_file('search')
+        adress = text.replace('find','').strip()
+        text = text.replace(adress,'').strip()
+        web_search()
+        text = ''
+    adress = ''
+
+def clear_task(): #удаляет ключевые слова
+    global text,ndel
+    for z in ndel:
+        text = text.replace(z,'').strip()
+        text = text.replace('  ',' ').strip()
+
+def hello(): # функция приветствия
+    global engine
+    z = ["Good to hear from you again!", 'What do you want?', 'Hello. Can I help you?"']
+    x = random.choice(z)
+    engine.say(x)
+
+def quit(): # функция выхода из программы
+    global engine
+    x = ['I hope to see you soon!', 'happy to help', 'always at your service']
+    engine.say(random.choice(x))
+    engine.runAndWait()
+    engine.stop()
+    os.system('cls')
+    exit(0)
+
+def show_cmds(): # выводит на экран список доступных комманд
+    my_com = ['hello', 'открой файл', 'выключи компьютер', 'пока', 'покажи список команд',
+    'open vk', 'открой интернет', 'открой youtube', 'включи музыку', 'очисти файл', 'покажи cтатистику']
+    for i in my_com:
+        print(i)
+    time.sleep(2)
+
+def brows(): # открывает браузер
+    webbrowser.open('https://google.ru')
+
+def ovk(): # открывает вк
+    webbrowser.open('https://vk.com/feed')
+
+def youtube(): # открывает ютюб
+    webbrowser.open('https://www.youtube.com')
+
+def shut(): # ыключает компьютер
+    global quit
+    os.system('sudo shutdown -h now')
+    quit()
+
+def musik(): # включает музыку
+    webbrowser.open('https://vk.com/')
+
+def check_translate():
+    global text, tr
+    tr = 0
+    variants = ['переведи', 'перевести', 'переводить', 'перевод']
+    for i in variants:
+        if (i in text)&(tr == 0):
+            word = text
+            word = word.replace('переведи','').strip()
+            word = word.replace('перевести','').strip()
+            word = word.replace('переводить','').strip()
+            word = word.replace('перевод','').strip()
+            word = word.replace('слово','').strip()
+            word = word.replace('слова','').strip()
+            webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
+            tr = 1
+            text = ''
+
+cmds = {
+    'hello' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
+    'пока' : quit,                              'покажи  cтатистику' : pri_com,              'покажи список команд' : show_cmds,
+    'открой браузер' : brows,                  'включи vk' : ovk,                            'открой интернет' : brows,
+    'открой youtube' : youtube,                   'вруби музыку' : musik,                      'open vk' : ovk,
+    'открой  стату' : pri_com,                   'включи музон' : musik,                      'очисти файл' : clear_analis,
+    'покажи файл' : pri_com,                  'открой файл' : pri_com,                  'открой музыку' : musik,
+    'планы' : plans,                           'на будущее' : plans,                      'что планируется' : plans,
+    'переведи' : check_translate
 }
 
-# WEATHER
-owm = pyowm.OWM('c17e34503b50a20cb2ccef7213239d58',language="en-US" )
-place = 'Rostov-on-Don'
-observation = owm.weather_at_place(place)
-w = observation.get_weather()
-temp = w.get_temperature('celsius')["temp_max"]
+# распознавание
 
-def weath():
-    if temp < 10 :
-        speak("Dress as warm as possible , it is very cold outside!")
-    elif temp < 20 :
-        speak("Dress warmly!")
+def talk():
+    global text, clear_task
+    text = ''
+    with sr.Microphone() as sourse:
+        print('Hello Artem: ')
+        r.adjust_for_ambient_noise(sourse)
+        audio = r.listen(sourse, phrase_time_limit=3)
+        try:
+            text = (r.recognize_google(audio, language="ru-RU")).lower()
+        except(sr.UnknownValueError):
+            pass
+        except(TypeError):
+            pass
+        os.system('cls')
+        lb['text'] = text
+        clear_task()
+
+# выполнение команд
+
+def cmd_exe():
+    global cmds, engine, comparison, check_searching, task_number, text, lb
+    check_translate()
+    text = comparison(text)
+    print(text)
+    check_searching()
+    if (text in cmds):
+        if (text != 'hello') & (text != 'goodbay!') & (text != 'покажи список команд'):
+            k = ['Just a second', 'Now make', 'already doing it']
+            engine.say(random.choice(k))
+        cmds[text]()
+    elif text == '':
+        pass
     else:
-        speak("The temperature is normal, Dress to your taste!")
+        print('Команда не найдена!')
+    task_number += 1
+    if (task_number % 10 == 0):
+        engine.say('У вас будут еще задания?')
+    engine.runAndWait()
+    engine.stop()
+
+# исправляет цвет
 
 
-# GOOGLE
-def srch():
-  r = sr.Recognizer()
-  with sr.Microphone(device_index = 3) as source:
-    print("Tell me what to look for...")
-    audio  = r.listen(source)
 
-  query = r.recognize_google(audio, language="en-US").lower()
-  print('You said: '+ query.lower())
+# основной бесконечный цикл
 
-  webbrowser.open('https://www.google.com/search?client=avast&q='+query.lower())
-
-def speak(what):
-    print( what )
-    speak_engine.say( what )
-    speak_engine.runAndWait()
-    speak_engine.stop()
-
-def callback(recognizer, audio):
+def main():
+    global text, talk, cmd_exe, j
     try:
-        voice = recognizer.recognize_google(audio, language="en-US").lower()
-        print("Recognized: " + voice)
+        talk()
+        if text != '':
+            cmd_exe()
+            j = 0
+    except(UnboundLocalError):
+        pass
+    except(TypeError):
+        pass
 
-        if voice.startswith(opts["alias"]):
-            # обращаются к Браниаку
-            cmd = voice
+# раздел создания интерфейса
 
-            for x in opts['alias']:
-                cmd = cmd.replace(x, "").strip()
+root = Tk()
+root.geometry('250x350')
+root.configure(bg = 'gray22')
+root.title('Sara')
+root.resizable(False, False)
 
+lb = Label(root, text = text)
+lb.configure(bg = 'gray')
+lb.place(x = 25, y = 25, height = 25, width = 200)
 
-            for x in opts['tbr']:
-                cmd = cmd.replace(x, "").strip()
+but1 = Button(root, text = 'What?', command = main)
+but1.configure(bd = 1, font = ('Castellar', 25), bg = 'gray')
+but1.place(x = 50, y = 160, height = 50, width = 150)
 
-            # распознаем и выполняем команду
-            cmd = recognize_cmd(cmd)
-            execute_cmd(cmd['cmd'])
+but2 = Button(root, text = 'Exit', command = quit)
+but2.configure(bd = 1, font = ('Castellar',25), bg = 'gray')
+but2.place(x = 50, y = 220, height = 50, width = 150)
 
-    except sr.UnknownValueError:
-        print("Golos ne Raspoznan!")
-    except sr.RequestError as e:
-        speak("Sar! Proverty podkluchenie k inety")
+root.mainloop()
 
-def recognize_cmd(cmd):
-    RC = {'cmd': '', 'percent': 0}
-    for c,v in opts['cmds'].items():
-
-        for x in v:
-            vrt = fuzz.ratio(cmd, x)
-            if vrt > RC['percent']:
-                RC['cmd'] = c
-                RC['percent'] = vrt
-
-    return RC
-
-
-def execute_cmd(cmd):
-
-
-    if cmd == 'ctimes':
-        # сказать текущее время
-        now = datetime.datetime.now()
-        speak("Now" + str(now.hour) + ":" + str(now.minute))
-
-    elif 'pogoda' in cmd:
-      speak("WEATHER" + str(temp ) + ' gradusov, ' + w.get_detailed_status())
-      weath()
-
-    elif 'search' in cmd:
-        srch()
-
-    elif 'yt' in cmd:
-        webbrowser.open('https://www.youtube.com/')
-        speak('okey!')
-
-    elif 'ctd' in cmd:
-        pyautogui.hotkey('win','d')
-
-
-    else:
-        speak("Ne ponimau!")
-# запуск
-r = sr.Recognizer()
-m = sr.Microphone(device_index = 3) # по умолчанию index = 1
-
-with m as source:
-    r.adjust_for_ambient_noise(source)
-
-speak_engine = pyttsx3.init()
-
-# Только если у вас установлены голоса для синтеза речи!
-
-
-#Распознает время и в соответствии с временем говорит приветствие
-now = datetime.datetime.now()
-welcome =  now.hour
-
-
-# Функция времени
-
-days = {0: u"ponedelnik", 1: u"vtornik", 2: u"sreda", 3: u"chetverk", 4: u"pyatnicha", 5: u"subbota", 6: u"voskreseniye"}
-today = datetime.datetime.today()
-
-
-if 13 > welcome :
-
-  speak('Good day ')
-  webbrowser.open('C:\\Users\\USER\\Music\\motivation\\rokki_balboa_motivacija_-_rocky_balboa_(zf.fm).mp3')
-  speak("Now" + ' '+ days[datetime.date.today().weekday()] +'. time '+ str(now.hour) + ":" + str(now.minute) )
-  speak("Weather" + str(temp ) + ' gradusov, ' + w.get_detailed_status())
-  weath()
-
-elif welcome <= 17:
-  speak('Hi bro, kak dela')
-
-elif welcome >= 18:
-  speak("Hi bro, kak dela")
-
-speak("Tom slushaet")
-
-stop_listening = r.listen_in_background(m, callback)
 while True:
-  time.sleep(0.1) # infinity loop
+    main()
