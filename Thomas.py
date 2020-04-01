@@ -24,8 +24,8 @@ task_number = 0
 ndel = ['Alexa', 'Алекса', 'Алекс']
 
 commands = ['Приветик','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'Спасибо', 'покажи файл','покажи список команд',
-'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
-'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump']
+'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку','сколько время', 'очисти файл',
+'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump','загугли']
 
 # Описания функций комманд
 def pri_com(): # выводит на экран историю запросов
@@ -71,6 +71,12 @@ def plans():
                     Моя конечная цель будет достигнута.| RHVoice-test -p Anna")
 
 
+def time():
+     import datetime
+     now = datetime.datetime.now()
+     os.system("echo Сейчас время %d часа %d минут| RHVoice-test -p Anna" % (now.hour, now.minute))
+     
+
 def clear_analis(): # очистка файла с историей запросов
     global engine
     file = open('commands.txt', 'w', encoding = 'UTF-8')
@@ -91,15 +97,15 @@ def check_searching(): # проверяет нужно-ли искать в ин
     global text,wifi_name,add_file
     global adress
     global web_search
-    if 'search' in text:
-        add_file('search')
-        adress = text.replace('search','').strip()
+    if 'загугли' in text:
+        add_file('загугли')
+        adress = text.replace('загугли','').strip()
         text = text.replace(adress,'').strip()
         web_search()
         text = ''
-    elif 'find' in text:
-        add_file('search')
-        adress = text.replace('find','').strip()
+    elif 'загугли' in text:
+        add_file('загугли')
+        adress = text.replace('загугли','').strip()
         text = text.replace(adress,'').strip()
         web_search()
         text = ''
@@ -135,7 +141,8 @@ def github():  # открывает гитхаб
 
 def brows(): # открывает браузер
     os.system("echo Открываю | RHVoice-test -p Anna")
-    webbrowser.open('https://google.ru')
+    webbrowser.open('https://google.ru'.format(textSearch))
+
 
 def ovk(): # открывает вк
     os.system("echo Вк открыт  | RHVoice-test -p Anna")
@@ -188,13 +195,13 @@ def comparison(x): # осуществляет поиск самой подход
 
 cmds = {
     'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
-    'Спасибо' : quit,                              'покажи  cтатистику' : pri_com,              'покажи список команд' : show_cmds,
+    'Спасибо' : quit,                              'покажи  cтатистику' : pri_com,           'загугли':web_search,
     'открой браузер' : brows,                  'включи vk' : ovk,                            'открой интернет' : brows,
     'открой youtube' : youtube,                   'вруби музыку' : musik,                      'open vk' : ovk,
     'открой  стату' : pri_com,                   'включи музон' : musik,                      'очисти файл' : clear_analis,
     'покажи файл' : pri_com,                  'открой файл' : pri_com,                  'открой музыку' : musik,
     'планы' : plans,                           'на будущее' : plans,                      'что планируется' : plans,
-    'открой гитхаб' : github,                     'pump' : playLILPump,
+    'открой гитхаб' : github,                     'pump' : playLILPump,                    'сколько время' : time,
     'переведи' : check_translate,                'play lil pump': playLILPump
 }
 
@@ -254,7 +261,7 @@ def main():
 
 
 # раздел создания интерфейса
-os.system("echo Здоровки, чем могу помочь? | RHVoice-test -p Anna")
+os.system("echo Alexa к вашим услугам! | RHVoice-test -p Anna")
 root = Tk()
 root.geometry('250x350')
 root.configure(bg = 'black')
