@@ -30,7 +30,7 @@ task_number = 0
 
 ndel = ['Alexa', 'Алекса', 'Алекс']
 
-commands = ['Приветик','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'пока', 'покажи файл','покажи список команд',
+commands = ['Приветик','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'Спасибо', 'покажи файл','покажи список команд',
 'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
 'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump']
 
@@ -99,7 +99,7 @@ def comparison(x): # осуществляет поиск самой подход
         if (k > 50)&(k > j):
             ans = commands[i]
             j = k
-    if (ans != 'Досвиданья!')& (ans != 'Приветик'):
+    if (ans != 'Спасибо!')& (ans != 'Приветик'):
         add_file(ans)
     return(str(ans))
 
@@ -144,15 +144,13 @@ def hello(): #функция приветствия
 
 def quit(): # функция выхода из программы
     global engine
-    x = ['I hope to see you soon!', 'happy to help', 'always at your service']
-    engine.say(random.choice(x))
-    engine.runAndWait()
+    os.system("echo Обращайтесь OBIITO | RHVoice-test -p Anna")
     engine.stop()
     os.system('cls')
     exit(0)
 
 def show_cmds(): # выводит на экран список доступных комманд
-    my_com = ['Приветик', 'открой гитхаб','открой файл', 'выключи компьютер', 'пока', 'покажи список команд',
+    my_com = ['Приветик', 'открой гитхаб','открой файл', 'выключи компьютер', 'Спасибо', 'покажи список команд',
     'open vk', 'открой интернет', 'открой youtube', 'включи музыку', 'очисти файл', 'покажи cтатистику']
     for i in my_com:
         print(i)
@@ -203,7 +201,7 @@ def check_translate():
 
 cmds = {
     'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
-    'пока' : quit,                              'покажи  cтатистику' : pri_com,              'покажи список команд' : show_cmds,
+    'Спасибо' : quit,                              'покажи  cтатистику' : pri_com,              'покажи список команд' : show_cmds,
     'открой браузер' : brows,                  'включи vk' : ovk,                            'открой интернет' : brows,
     'открой youtube' : youtube,                   'вруби музыку' : musik,                      'open vk' : ovk,
     'открой  стату' : pri_com,                   'включи музон' : musik,                      'очисти файл' : clear_analis,
@@ -240,7 +238,7 @@ def cmd_exe():
     print(text)
     check_searching()
     if (text in cmds):
-        if (text != 'Приветик') & (text != 'Досвиданья!') & (text != 'покажи список команд'):
+        if (text != 'Приветик') & (text != 'Спасибо') & (text != 'покажи список команд'):
             os.system("echo Одну секунду | RHVoice-test -p Anna")
 
         cmds[text]()
