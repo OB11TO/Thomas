@@ -28,9 +28,9 @@ adress = ''
 j = 0
 task_number = 0
 
-ndel = ['sara', 'zara', 'ok']
+ndel = ['Alexa', 'Алекса', 'Алекс']
 
-commands = ['hello','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'пока', 'покажи файл','покажи список команд',
+commands = ['Приветик','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'пока', 'покажи файл','покажи список команд',
 'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
 'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump']
 
@@ -70,22 +70,20 @@ def pri_com(): # выводит на экран историю запросов
 
 def plans():
     global engine
-    plans = '''
-    My task will be to help manage the smart home system.
-Currently, we are working on the virtual part of the software.
-We are also working on optimizing all existing functions in the code.
-In the future, we plan to work on the technical part of the project.
-It will consist of creating smart home elements using Arduino microcontrollers.
-Eventually, the virtual and technical parts of the project will be combined.
-My final goal will be achieved.
-     '''
-    engine.say(plans)
+    os.system("echo Моя задача будет состоять в том, чтобы помочь управлять системой Умный дом.\
+                    В настоящее время мы работаем над виртуальной частью программного обеспечения.\
+                    Мы также работаем над оптимизацией всех существующих функций в коде.\
+                    В дальнейшем мы планируем работать над технической частью проекта.\
+                    Она будет состоять из создания элементов умного дома с использованием микроконтроллеров Arduino.\
+                    В конечном итоге виртуальная и техническая части проекта будут объединены.\
+                    Моя конечная цель будет достигнута.| RHVoice-test -p Anna")
+
 
 def clear_analis(): # очистка файла с историей запросов
     global engine
     file = open('commands.txt', 'w', encoding = 'UTF-8')
     file.close()
-    engine.say('The Analytics file has been cleared!')
+    os.system("Файл аналитики был очищен! | RHVoice-test -p Anna")
 
 def add_file(x):
     file = open('commands.txt', 'a',encoding = 'UTF-8')
@@ -101,7 +99,7 @@ def comparison(x): # осуществляет поиск самой подход
         if (k > 50)&(k > j):
             ans = commands[i]
             j = k
-    if (ans != 'goodbay!')& (ans != 'hello'):
+    if (ans != 'Досвиданья!')& (ans != 'Приветик'):
         add_file(ans)
     return(str(ans))
 
@@ -133,11 +131,16 @@ def clear_task(): #удаляет ключевые слова
         text = text.replace(z,'').strip()
         text = text.replace('  ',' ').strip()
 
+'''
 def hello(): # функция приветствия
     global engine
     z = ["Good to hear from you again!", 'What do you want?', 'Hello. Can I help you?"']
     x = random.choice(z)
     engine.say(x)
+'''
+def hello(): #функция приветствия
+    global engine
+    os.system("echo Приветик. OBIITO. Есть вопросы ? | RHVoice-test -p Anna"),
 
 def quit(): # функция выхода из программы
     global engine
@@ -149,22 +152,26 @@ def quit(): # функция выхода из программы
     exit(0)
 
 def show_cmds(): # выводит на экран список доступных комманд
-    my_com = ['hello', 'открой гитхаб','открой файл', 'выключи компьютер', 'пока', 'покажи список команд',
+    my_com = ['Приветик', 'открой гитхаб','открой файл', 'выключи компьютер', 'пока', 'покажи список команд',
     'open vk', 'открой интернет', 'открой youtube', 'включи музыку', 'очисти файл', 'покажи cтатистику']
     for i in my_com:
         print(i)
     time.sleep(2)
 
 def github():
+    os.system("echo Открываю твою страницу GitHuba | RHVoice-test -p Anna")
     webbrowser.open('https://github.com/OB11TO')
 
 def brows(): # открывает браузер
+    os.system("echo Открываю | RHVoice-test -p Anna")
     webbrowser.open('https://google.ru')
 
 def ovk(): # открывает вк
+    os.system("echo Вк открыт  | RHVoice-test -p Anna")
     webbrowser.open('https://vk.com/feed')
 
 def youtube(): # открывает ютюб
+    os.system("echo Открываю youtube | RHVoice-test -p Anna")
     webbrowser.open('https://www.youtube.com')
 
 def shut(): # ыключает компьютер
@@ -195,7 +202,7 @@ def check_translate():
             text = ''
 
 cmds = {
-    'hello' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
+    'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
     'пока' : quit,                              'покажи  cтатистику' : pri_com,              'покажи список команд' : show_cmds,
     'открой браузер' : brows,                  'включи vk' : ovk,                            'открой интернет' : brows,
     'открой youtube' : youtube,                   'вруби музыку' : musik,                      'open vk' : ovk,
@@ -211,7 +218,7 @@ def talk():
     global text, clear_task
     text = ''
     with sr.Microphone() as sourse:
-        print('Hello Artem: ')
+        print('Здравстуй OB11TO: ')
         r.adjust_for_ambient_noise(sourse)
         audio = r.listen(sourse, phrase_time_limit=3)
         try:
@@ -233,7 +240,7 @@ def cmd_exe():
     print(text)
     check_searching()
     if (text in cmds):
-        if (text != 'hello') & (text != 'goodbay!') & (text != 'покажи список команд'):
+        if (text != 'Приветик') & (text != 'Досвиданья!') & (text != 'покажи список команд'):
             os.system("echo Одну секунду | RHVoice-test -p Anna")
 
         cmds[text]()
@@ -269,22 +276,22 @@ def main():
 #keyboard.add_hotkey("del",main)
 #keyboard.wait("Ctrl + Q")
 # раздел создания интерфейса
-
+os.system("echo Здоровки, чем могу помочь? | RHVoice-test -p Anna")
 root = Tk()
 root.geometry('250x350')
-root.configure(bg = 'gray22')
-root.title('Sara')
+root.configure(bg = 'black')
+root.title('Alexa')
 root.resizable(False, False)
 
 lb = Label(root, text = text)
 lb.configure(bg = 'gray')
 lb.place(x = 25, y = 25, height = 25, width = 200)
 
-but1 = Button(root, text = 'What?', command = main)
+but1 = Button(root, text = 'Вопрос?', command = main)
 but1.configure(bd = 1, font = ('Castellar', 25), bg = 'gray')
 but1.place(x = 50, y = 160, height = 50, width = 150)
 
-but2 = Button(root, text = 'Exit', command = quit)
+but2 = Button(root, text = 'Выход', command = quit)
 but2.configure(bd = 1, font = ('Castellar',25), bg = 'gray')
 but2.place(x = 50, y = 220, height = 50, width = 150)
 
