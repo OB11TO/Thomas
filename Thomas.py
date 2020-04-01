@@ -9,6 +9,7 @@ from tkinter import *
 from fuzzywuzzy import fuzz
 from colorama import *
 import sys
+import keyboard
 
 
 
@@ -17,6 +18,12 @@ import sys
 text = ''
 r = sr.Recognizer()
 engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+#engine.setProperty('voice', 'ru')
+for voice in voices:
+    ru = voice.id.find('RHVoice\Anna')  # Найти Анну от RHVoice
+    if ru > -1: # Eсли нашли, выбираем этот голос
+        engine.setProperty('voice', voice.id)
 adress = ''
 j = 0
 task_number = 0
@@ -25,7 +32,7 @@ ndel = ['sara', 'zara', 'ok']
 
 commands = ['hello','открой гитхаб', 'открой файл', 'down comp', 'выруби компьютер', 'пока', 'покажи файл','покажи список команд',
 'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
-'открой стату', 'покажи cтатистику', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется']
+'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump']
 
 # раздел описания функций комманд
 
@@ -164,7 +171,9 @@ def shut(): # ыключает компьютер
     global quit
     os.system('sudo shutdown -h now')
     quit()
-
+def playLILPump():
+    os.system("echo Включаю Лил пампа | RHVoice-test -p Anna")
+    webbrowser.open('https://www.youtube.com/watch?v=DPxL7dO5XPc')
 def musik(): # включает музыку
     webbrowser.open('https://vk.com/')
 
@@ -193,12 +202,11 @@ cmds = {
     'открой  стату' : pri_com,                   'включи музон' : musik,                      'очисти файл' : clear_analis,
     'покажи файл' : pri_com,                  'открой файл' : pri_com,                  'открой музыку' : musik,
     'планы' : plans,                           'на будущее' : plans,                      'что планируется' : plans,
-    'открой гитхаб' : github,
-    'переведи' : check_translate
+    'открой гитхаб' : github,                     'pump' : playLILPump,
+    'переведи' : check_translate,                'play lil pump': playLILPump
 }
 
 # распознавание
-
 def talk():
     global text, clear_task
     text = ''
@@ -226,8 +234,8 @@ def cmd_exe():
     check_searching()
     if (text in cmds):
         if (text != 'hello') & (text != 'goodbay!') & (text != 'покажи список команд'):
-            k = ['Just a second', 'Now make', 'already doing it']
-            engine.say(random.choice(k))
+            os.system("echo Одну секунду | RHVoice-test -p Anna")
+
         cmds[text]()
     elif text == '':
         pass
@@ -257,6 +265,9 @@ def main():
     except(TypeError):
         pass
 
+
+#keyboard.add_hotkey("del",main)
+#keyboard.wait("Ctrl + Q")
 # раздел создания интерфейса
 
 root = Tk()
@@ -278,6 +289,3 @@ but2.configure(bd = 1, font = ('Castellar',25), bg = 'gray')
 but2.place(x = 50, y = 220, height = 50, width = 150)
 
 root.mainloop()
-
-while True:
-    main()
