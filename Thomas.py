@@ -12,18 +12,11 @@ import sys
 import keyboard
 
 
-
-# раздел глобальных переменных
-
+# Глобальные переменные
 text = ''
 r = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-#engine.setProperty('voice', 'ru')
-for voice in voices:
-    ru = voice.id.find('RHVoice\Anna')  # Найти Анну от RHVoice
-    if ru > -1: # Eсли нашли, выбираем этот голос
-        engine.setProperty('voice', voice.id)
 adress = ''
 j = 0
 task_number = 0
@@ -34,8 +27,7 @@ commands = ['Приветик','открой гитхаб', 'открой фай
 'open vk', 'открой браузер', 'open vk', 'открой интернет', 'открой youtube', 'включи музон','вруби музыку', 'очисти файл',
 'открой стату', 'покажи cтатистику', 'покажи красивую девушку', 'открой музыку', 'переведи', 'планы', 'на будущее', 'что планируется', 'play lil pump']
 
-# раздел описания функций комманд
-
+# Описания функций комманд
 def pri_com(): # выводит на экран историю запросов
     z = {}
     mas = []
@@ -85,23 +77,11 @@ def clear_analis(): # очистка файла с историей запрос
     file.close()
     os.system("Файл аналитики был очищен! | RHVoice-test -p Anna")
 
-def add_file(x):
+def add_file(x): # история запросов
     file = open('commands.txt', 'a',encoding = 'UTF-8')
     if x != '':
         file.write(x+'\n')
     file.close()
-
-def comparison(x): # осуществляет поиск самой подходящей под запрос функции
-    global commands,j,add_file
-    ans = ''
-    for i in range(len(commands)):
-        k = fuzz.ratio(x,commands[i])
-        if (k > 50)&(k > j):
-            ans = commands[i]
-            j = k
-    if (ans != 'Спасибо!')& (ans != 'Приветик'):
-        add_file(ans)
-    return(str(ans))
 
 def web_search(): # осуществляет поиск в интернете по запросу (adress)
     global adress
@@ -149,15 +129,8 @@ def quit(): # функция выхода из программы
     os.system('cls')
     exit(0)
 
-def show_cmds(): # выводит на экран список доступных комманд
-    my_com = ['Приветик', 'открой гитхаб','открой файл', 'выключи компьютер', 'Спасибо', 'покажи список команд',
-    'open vk', 'открой интернет', 'открой youtube', 'включи музыку', 'очисти файл', 'покажи cтатистику']
-    for i in my_com:
-        print(i)
-    time.sleep(2)
-
-def github():
-    os.system("echo Открываю твою страницу GitHuba | RHVoice-test -p Anna")
+def github():  # открывает гитхаб
+    os.system("echo Открываю твою страницу Гитхаба | RHVoice-test -p Anna")
     webbrowser.open('https://github.com/OB11TO')
 
 def brows(): # открывает браузер
@@ -172,13 +145,15 @@ def youtube(): # открывает ютюб
     os.system("echo Открываю youtube | RHVoice-test -p Anna")
     webbrowser.open('https://www.youtube.com')
 
-def shut(): # ыключает компьютер
+def shut(): # выключает компьютер
     global quit
     os.system('sudo shutdown -h now')
     quit()
-def playLILPump():
+
+def playLILPump(): #включает пампа
     os.system("echo Включаю Лил пампа | RHVoice-test -p Anna")
     webbrowser.open('https://www.youtube.com/watch?v=DPxL7dO5XPc')
+
 def musik(): # включает музыку
     webbrowser.open('https://vk.com/')
 
@@ -198,6 +173,18 @@ def check_translate():
             webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
             tr = 1
             text = ''
+
+def comparison(x): # осуществляет поиск самой подходящей под запрос функции
+    global commands,j,add_file
+    ans = ''
+    for i in range(len(commands)):
+        k = fuzz.ratio(x,commands[i])
+        if (k > 50)&(k > j):
+            ans = commands[i]
+            j = k
+    if (ans != 'Спасибо!')& (ans != 'Приветик'):
+        add_file(ans)
+    return(str(ans))
 
 cmds = {
     'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
@@ -230,7 +217,6 @@ def talk():
         clear_task()
 
 # выполнение команд
-
 def cmd_exe():
     global cmds, engine, comparison, check_searching, task_number, text, lb
     check_translate()
@@ -252,12 +238,8 @@ def cmd_exe():
     engine.runAndWait()
     engine.stop()
 
-# исправляет цвет
-
-
 
 # основной бесконечный цикл
-
 def main():
     global text, talk, cmd_exe, j
     try:
@@ -271,8 +253,6 @@ def main():
         pass
 
 
-#keyboard.add_hotkey("del",main)
-#keyboard.wait("Ctrl + Q")
 # раздел создания интерфейса
 os.system("echo Здоровки, чем могу помочь? | RHVoice-test -p Anna")
 root = Tk()
