@@ -10,6 +10,7 @@ from fuzzywuzzy import fuzz
 from colorama import *
 import sys
 import keyboard
+import commands
 
 
 # Глобальные переменные
@@ -75,7 +76,7 @@ def time():
      import datetime
      now = datetime.datetime.now()
      os.system("echo Сейчас время %d часа %d минут| RHVoice-test -p Anna" % (now.hour, now.minute))
-     
+
 
 def clear_analis(): # очистка файла с историей запросов
     global engine
@@ -117,13 +118,6 @@ def clear_task(): #удаляет ключевые слова
         text = text.replace(z,'').strip()
         text = text.replace('  ',' ').strip()
 
-'''
-def hello(): # функция приветствия
-    global engine
-    z = ["Good to hear from you again!", 'What do you want?', 'Hello. Can I help you?"']
-    x = random.choice(z)
-    engine.say(x)
-'''
 def hello(): #функция приветствия
     global engine
     os.system("echo Приветик. OBIITO. Есть вопросы ? | RHVoice-test -p Anna"),
@@ -241,7 +235,7 @@ def cmd_exe():
         print('Команда не найдена!')
     task_number += 1
     if (task_number % 10 == 0):
-        engine.say('У вас будут еще задания?')
+        os.system("echo У тебя будет еще вопрос? | RHVoice-test -p Anna")
     engine.runAndWait()
     engine.stop()
 
