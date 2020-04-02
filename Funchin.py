@@ -1,6 +1,4 @@
-import pyttsx3
 import os
-import random
 import webbrowser
 import time
 import speech_recognition as sr
