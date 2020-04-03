@@ -26,97 +26,19 @@ task_number = 0
 ndel = ['Alexa', 'Алекса', 'Алекс']
 
 
-# Описания функций комманд
-def pri_com(): # выводит на экран историю запросов
-    z = {}
-    mas = []
-    mas2 = []
-    mas3 = []
-    mas4 = []
-    file = open('commands.txt', 'r', encoding = 'UTF-8')
-    k = file.readlines()
-    for i in range(len(k)):
-        line = str(k[i].replace('\n','').strip())
-        mas.append(line)
-    file.close()
-    for i in range(len(mas)):
-        x = mas[i]
-        if x in z:
-            z[x] += 1
-        if not(x in z):
-            b = {x : 1}
-            z.update(b)
-        if not(x in mas2):
-            mas2.append(x)
-    for i in mas2:
-        mas3.append(z[i])
-    for i in range(1, len(mas3)+1):
-        mas4.append(str(i)+') ')
-    list = pd.DataFrame({
-        'command' : mas2,
-        'count' : mas3
-    }, index = mas4)
-    list.index.name = '№'
-    print(list)
 
+# Описания функций комманд
 def add_file(x): # история запросов
     file = open('commands.txt', 'a',encoding = 'UTF-8')
     if x != '':
         file.write(x+'\n')
     file.close()
 
-def web_search(): # осуществляет поиск в интернете по запросу (adress)
-    global adress
-    webbrowser.open('https://yandex.ru/yandsearch?clid=2028026&text={}&lr=11373'.format(adress))
-
-def check_searching(): # проверяет нужно-ли искать в интернете
-    global text,wifi_name,add_file
-    global adress
-    global web_search
-    if 'загугли' in text:
-        add_file('загугли')
-        adress = text.replace('загугли','').strip()
-        text = text.replace(adress,'').strip()
-        web_search()
-        text = ''
-    elif 'загугли' in text:
-        add_file('загугли')
-        adress = text.replace('загугли','').strip()
-        text = text.replace(adress,'').strip()
-        web_search()
-        text = ''
-    adress = ''
-
 def clear_task(): #удаляет ключевые слова
     global text,ndel
     for z in ndel:
         text = text.replace(z,'').strip()
         text = text.replace('  ',' ').strip()
-
-
-def quit(): # функция выхода из программы
-    global engine
-    os.system("echo Обращайтесь OBIITO | RHVoice-test -p Anna")
-    engine.stop()
-    os.system('cls')
-    exit(0)
-
-def check_translate():
-    global text, tr
-    tr = 0
-    variants = ['переведи', 'перевести', 'переводить', 'перевод']
-    for i in variants:
-        if (i in text)&(tr == 0):
-            word = text
-            word = word.replace('переведи','').strip()
-            word = word.replace('перевести','').strip()
-            word = word.replace('переводить','').strip()
-            word = word.replace('перевод','').strip()
-            word = word.replace('слово','').strip()
-            word = word.replace('слова','').strip()
-            webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
-            tr = 1
-            text = ''
 
 def comparison(x): # осуществляет поиск самой подходящей под запрос функции
     global commands,j,add_file
@@ -172,6 +94,23 @@ def cmd_exe():
     engine.runAndWait()
     engine.stop()
 
+def check_translate():
+    global text, tr
+    tr = 0
+    variants = ['переведи', 'перевести', 'переводить', 'перевод']
+    for i in variants:
+        if (i in text)&(tr == 0):
+            word = text
+            word = word.replace('переведи','').strip()
+            word = word.replace('перевести','').strip()
+            word = word.replace('переводить','').strip()
+            word = word.replace('перевод','').strip()
+            word = word.replace('слово','').strip()
+            word = word.replace('слова','').strip()
+            webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
+            tr = 1
+            text = ''
+
 
 # основной бесконечный цикл
 def main():
@@ -185,7 +124,7 @@ def main():
         pass
     except(TypeError):
         pass
-        
+
 cmds = {
     'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
     'Спасибо' : quit,                              'покажи  cтатистику' : pri_com,           'загугли':web_search,

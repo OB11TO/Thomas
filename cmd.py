@@ -1,6 +1,5 @@
 from Funchin import *
 
-
 commands = ['Приветик',
             'открой гитхаб',
             'открой файл',

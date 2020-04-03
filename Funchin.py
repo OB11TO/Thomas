@@ -1,3 +1,4 @@
+import pyttsx3
 import os
 import webbrowser
 import time
@@ -7,7 +8,16 @@ from tkinter import *
 from fuzzywuzzy import fuzz
 from colorama import *
 import sys
-import keyboard
+
+
+# Глобальные переменные
+text = ''
+r = sr.Recognizer()
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+adress = ''
+j = 0
+task_number = 0
 
 
 
@@ -41,7 +51,7 @@ def github():  # открывает гитхаб
 
 def brows(): # открывает браузер
     os.system("echo Открываю | RHVoice-test -p Anna")
-    webbrowser.open('https://google.ru'.format(textSearch))
+    webbrowser.open('https://google.ru')
 
 
 def ovk(): # открывает вк
@@ -63,3 +73,64 @@ def playLILPump(): #включает пампа
 
 def musik(): # включает музыку
     webbrowser.open('https://vk.com/')
+
+def web_search(): # осуществляет поиск в интернете по запросу (adress)
+    global adress
+    webbrowser.open('https://yandex.ru/yandsearch?clid=2028026&text={}&lr=11373'.format(adress))
+
+def check_searching(): # проверяет нужно-ли искать в интернете
+    global text,wifi_name,add_file
+    global adress
+    global web_search
+    if 'загугли' in text:
+        add_file('загугли')
+        adress = text.replace('загугли','').strip()
+        text = text.replace(adress,'').strip()
+        web_search()
+        text = ''
+    elif 'загугли' in text:
+        add_file('загугли')
+        adress = text.replace('загугли','').strip()
+        text = text.replace(adress,'').strip()
+        web_search()
+        text = ''
+    adress = ''
+
+def pri_com(): # выводит на экран историю запросов
+    z = {}
+    mas = []
+    mas2 = []
+    mas3 = []
+    mas4 = []
+    file = open('commands.txt', 'r', encoding = 'UTF-8')
+    k = file.readlines()
+    for i in range(len(k)):
+        line = str(k[i].replace('\n','').strip())
+        mas.append(line)
+    file.close()
+    for i in range(len(mas)):
+        x = mas[i]
+        if x in z:
+            z[x] += 1
+        if not(x in z):
+            b = {x : 1}
+            z.update(b)
+        if not(x in mas2):
+            mas2.append(x)
+    for i in mas2:
+        mas3.append(z[i])
+    for i in range(1, len(mas3)+1):
+        mas4.append(str(i)+') ')
+    list = pd.DataFrame({
+        'command' : mas2,
+        'count' : mas3
+    }, index = mas4)
+    list.index.name = '№'
+    print(list)
+
+def quit(): # функция выхода из программы
+    global engine
+    os.system("echo Обращайтесь OBIITO | RHVoice-test -p Anna")
+    engine.stop()
+    os.system('cls')
+    exit(0)
