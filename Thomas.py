@@ -94,23 +94,6 @@ def cmd_exe():
     engine.runAndWait()
     engine.stop()
 
-def check_translate():
-    global text, tr
-    tr = 0
-    variants = ['переведи', 'перевести', 'переводить', 'перевод']
-    for i in variants:
-        if (i in text)&(tr == 0):
-            word = text
-            word = word.replace('переведи','').strip()
-            word = word.replace('перевести','').strip()
-            word = word.replace('переводить','').strip()
-            word = word.replace('перевод','').strip()
-            word = word.replace('слово','').strip()
-            word = word.replace('слова','').strip()
-            webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
-            tr = 1
-            text = ''
-
 
 # основной бесконечный цикл
 def main():
@@ -125,17 +108,6 @@ def main():
     except(TypeError):
         pass
 
-cmds = {
-    'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
-    'Спасибо' : quit,                              'покажи  cтатистику' : pri_com,           'загугли':web_search,
-    'открой браузер' : brows,                  'включи vk' : ovk,                            'открой интернет' : brows,
-    'открой youtube' : youtube,                   'вруби музыку' : musik,                      'open vk' : ovk,
-    'открой  стату' : pri_com,                   'включи музон' : musik,                      'очисти файл' : clear_analis,
-    'покажи файл' : pri_com,                  'открой файл' : pri_com,                  'открой музыку' : musik,
-    'планы' : plans,                           'на будущее' : plans,                      'что планируется' : plans,
-    'открой гитхаб' : github,                     'pump' : playLILPump,                    'сколько время' : time,
-    'переведи' : check_translate,                'play lil pump': playLILPump
-}
 
 
 # раздел создания интерфейса
