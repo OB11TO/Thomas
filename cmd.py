@@ -24,7 +24,8 @@ commands = ['Приветик',
             'на будущее',
             'что планируется',
             'play lil pump',
-            'загугли']
+            'загугли'
+            'апдейт', 'апгрейт']
 
 cmds = {
     'Приветик' : hello,                         'выруби компьютер' : shut,                   'down comp' : shut,
@@ -35,5 +36,6 @@ cmds = {
     'покажи файл' : pri_com,                  'открой файл' : pri_com,                  'открой музыку' : musik,
     'планы' : plans,                           'на будущее' : plans,                      'что планируется' : plans,
     'открой гитхаб' : github,                     'pump' : playLILPump,                    'сколько время' : time,
-    'переведи' : check_translate,                'play lil pump': playLILPump
+    'переведи' : check_translate,                'play lil pump': playLILPump ,               'апдейт':update,
+                                                                                            'апгрейт': upgrade
 }

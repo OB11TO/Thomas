@@ -33,7 +33,7 @@ def plans():
                     В конечном итоге виртуальная и техническая части проекта будут объединены.\
                     Моя конечная цель будет достигнута.| RHVoice-test -p Anna")
 
-def time():
+def time(): #  узнает время
      import datetime
      now = datetime.datetime.now()
      os.system("echo Сейчас время %d часа %d минут| RHVoice-test -p Anna" % (now.hour, now.minute))
@@ -61,6 +61,12 @@ def ovk(): # открывает вк
 def youtube(): # открывает ютюб
     os.system("echo Открываю youtube | RHVoice-test -p Anna")
     webbrowser.open('https://www.youtube.com')
+
+def update(): # проверка обновления
+	os.system('sudo apt-get update')
+
+def upgrade(): # установка обновлений
+	os.system('sudo apt-get upgrade')
 
 def shut(): # выключает компьютер
     global quit
