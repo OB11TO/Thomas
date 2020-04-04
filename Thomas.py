@@ -75,7 +75,6 @@ def talk():
 # выполнение команд
 def cmd_exe():
     global cmds, engine, comparison, check_searching, task_number, text, lb
-    check_translate()
     text = comparison(text)
     print(text)
     check_searching()

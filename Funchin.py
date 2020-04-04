@@ -85,21 +85,11 @@ def web_search(): # осуществляет поиск в интернете п
     webbrowser.open('https://yandex.ru/yandsearch?clid=2028026&text={}&lr=11373'.format(adress))
 
 def check_translate():
-    global text, tr
-    tr = 0
-    variants = ['переведи', 'перевести', 'переводить', 'перевод']
-    for i in variants:
-        if (i in text)&(tr == 0):
-            word = text
-            word = word.replace('переведи','').strip()
-            word = word.replace('перевести','').strip()
-            word = word.replace('переводить','').strip()
-            word = word.replace('перевод','').strip()
-            word = word.replace('слово','').strip()
-            word = word.replace('слова','').strip()
-            webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
-            tr = 1
-            text = ''
+    global text
+    word = text
+    word = word.replace('переведи','').strip()
+    webbrowser.open('https://translate.google.ru/#view=home&op=translate&sl=auto&tl=ru&text={}'.format(word))
+    text = ''
 
 def check_searching(): # проверяет нужно-ли искать в интернете
     global text,wifi_name,add_file
