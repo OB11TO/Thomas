@@ -156,9 +156,9 @@ def weather():
         'M': '',
         'lang':'ru'
         }
-    os.system("echo Ваш прогноз погоды | RHVoice-test -p Anna")
     response = requests.get(url, params=weather_parameters)
     print(response.text)
+    os.system("echo Ваш прогноз погоды | RHVoice-test -p Anna")
 
 def quit(): # функция выхода из программы
     global engine
