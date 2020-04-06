@@ -79,7 +79,7 @@ def cmd_exe():
     print(text)
     check_searching()
     if (text in cmds):
-        if (text != 'Приветик') & (text != 'Спасибо') & (text != 'покажи список команд'):
+        if (text != 'Приветик') & (text!= 'как тебя зовут') & (text != 'кто ты') & (text != 'Спасибо') & (text != 'покажи список команд'):
             os.system("echo Одну секунду | RHVoice-test -p Anna")
 
         cmds[text]()
