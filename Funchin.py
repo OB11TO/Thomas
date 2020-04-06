@@ -33,10 +33,15 @@ def plans():
                     В конечном итоге виртуальная и техническая части проекта будут объединены.\
                     Моя конечная цель будет достигнута.| RHVoice-test -p Anna")
 
+def alexa():
+    os.system("echo Меня зовут Alexa. Я простой голосовой помошник, \
+                    предназначенный для упрощения пользования системой Линукс.\
+                    Создал меня разработчик OBITO. Будут ли вопросы ко мне? | RHVoice-test -p Anna")
+
 def time(): #  узнает время
      import datetime
      now = datetime.datetime.now()
-     os.system("echo Сейчас время %d часа %d минут| RHVoice-test -p Anna" % (now.hour, now.minute))
+     os.system("echo Сейчас %d %d | RHVoice-test -p Anna" % (now.hour, now.minute))
 
 
 def clear_analis(): # очистка файла с историей запросов
