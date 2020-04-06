@@ -8,6 +8,7 @@ from tkinter import *
 from fuzzywuzzy import fuzz
 from colorama import *
 import sys
+import requests
 
 
 # Глобальные переменные
@@ -145,6 +146,19 @@ def pri_com(): # выводит на экран историю запросов
     }, index = mas4)
     list.index.name = '№'
     print(list)
+
+
+def weather():
+    url = 'https://wttr.in'
+    weather_parameters = {
+        '1': '',
+        'T': '',
+        'M': '',
+        'lang':'ru'
+        }
+    os.system("echo Ваш прогноз погоды | RHVoice-test -p Anna")
+    response = requests.get(url, params=weather_parameters)
+    print(response.text)
 
 def quit(): # функция выхода из программы
     global engine
