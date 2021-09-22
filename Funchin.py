@@ -39,6 +39,12 @@ def alexa():
                     предназначенный для упрощения пользования системой Линукс.\
                     Создал меня разработчик OBITO. Будут ли вопросы ко мне? | RHVoice-test -p Anna")
 
+def obiitoOne():
+    os.system("echo Он один из основателей Черных Быков. И первый человек пробудивший менгекё шаринган.\
+                     Непобедимый и бесмертный.\
+                     Мой сообщник и создатель. Единственный, кому удалось узнать тайну вечного цукуёми.\
+                      Вот кто такой OBITO | RHVoice-test -p Anna")
+
 def time(): #  узнает время
      import datetime
      now = datetime.datetime.now()
@@ -82,6 +88,22 @@ def shut(): # выключает компьютер
 def playLILPump(): #включает пампа
     os.system("echo Включаю Лил пампа | RHVoice-test -p Anna")
     webbrowser.open('https://www.youtube.com/watch?v=DPxL7dO5XPc')
+
+def playKatyaNovemvber():
+    os.system("echo Уже приготовила для тебя кое-что. Закрывай глаза и наслаждайся | RHVoice-test -p Anna")
+    webbrowser.open('https://disk.yandex.ru/client/disk?idApp=client&dialog=slider&idDialog=%2Fdisk%2Flv_0_20210922170703.mp4')
+
+def playYoloTAgMAlina():
+    os.system("echo Брат, ща покайфуешь, отвечаю, держи малину! | RHVoice-test -p Anna")
+    webbrowser.open('https://www.youtube.com/watch?v=XAOLChiYRT8')
+
+def  playPharaohSmart():
+    os.system("echo Всегда смарт, я как вода, специально для тебя Аксинья!!!! | RHVoice-test -p Anna")
+    webbrowser.open('https://www.youtube.com/watch?v=2NI1fDkToCA')
+
+def  playZazJuVew():
+    os.system("echo Погрузимся немного во Францию. Специально для бабушки Николь играет следующий трек| RHVoice-test -p Anna")
+    webbrowser.open('https://www.youtube.com/watch?v=0TFNGRYMz1U')
 
 def musik(): # включает музыку
     webbrowser.open('https://vk.com/')
